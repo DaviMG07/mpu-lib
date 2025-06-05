@@ -46,27 +46,27 @@ O acesso aos PIOs via memória é implementado em *assembly* ARMv7, com as segui
 ### init_mpu 🚀
 - **Descrição**: Realiza a chamada de sistema `open("/dev/mem", ...)` para obter o *file descriptor* da memória do sistema. Em seguida, utiliza `mmap(..., file_descriptor)` para mapear o endereço base do barramento AXI (`axi_address`). Por fim, inicializa os ponteiros `data_in_ptr` e `data_out_ptr`.  
 
-![Fluxograma de inicialização da biblioteca](assets/init_mpu.drawio.png) 📊
+![Fluxograma de inicialização da biblioteca](assets/init_mpu.drawio.png) 
 
 ### finish_mpu 🛑
 - **Descrição**: Encerra as variáveis inicializadas em `mpu_init`, executando `close(file_descriptor)` e `munmap(axi_address)`, além de definir `data_in_ptr` e `data_out_ptr` como `NULL`.  
 
-![Fluxograma de finalização da biblioteca](assets/finish_mpu.drawio.png) 📊
+![Fluxograma de finalização da biblioteca](assets/finish_mpu.drawio.png) 
 
 ### format_instruction 📝
 - **Descrição**: Recebe uma `struct Instruction` e formata cada campo como um inteiro de 32 bits. Utiliza o `op_code` como condição para personalizar a formatação, adaptando-se aos quatro tipos de organização de dados da ISA.  
 
-![Fluxograma de formatação de instrução](assets/format_instr.drawio.png) 📊
+![Fluxograma de formatação de instrução](assets/format_instr.drawio.png) 
 
 ### send_instruction 📬
 - **Descrição**: Recebe dois parâmetros: `instruction` (int) e `wait_flags` (int). Envia a instrução para `pio_data_in` por meio de `data_in_ptr`. Se `wait_flags` for diferente de zero (ou seja, não for uma operação NOP ou RST), inicia um loop até que o coprocessador retorne uma flag, lida via `data_out_ptr`.  
 
-![Fluxograma de envio de instrução](assets/send_instr.drawio.png) 📊
+![Fluxograma de envio de instrução](assets/send_instr.drawio.png) 
 
 ### Operações (nop, load, store, add, sub, mul, mul scalar, reset) ⚙️
 - **Descrição**: Todas as operações compartilham o mesmo algoritmo, diferindo apenas na formatação da `struct Instruction` local.  
 
-![Fluxograma geral das operações da biblioteca](assets/operations.drawio.png) 📊
+![Fluxograma geral das operações da biblioteca](assets/operations.drawio.png) 
 
 ---
 
